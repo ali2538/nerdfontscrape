@@ -18,6 +18,7 @@ int download(const char *dl_link, const char *dl_location) {
   if (curl) {
     dfile = std::fopen(dl_location, "wb");
     curl_easy_setopt(curl, CURLOPT_URL, dl_link);
+    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 2L);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, save_file);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, dfile);
