@@ -39,7 +39,9 @@ int main(int argc, char *argv[]) {
       match_str = tempMatch.str();
       std::regex_search(match_str, sm, file_name_match);
       dl_folder_file_name = dl_folder + sm.str();
-      std::cout << "Found " << dl_folder_file_name << std::endl;
+      std::cout << match_str << std::endl;
+      success = download(match_str.c_str(), dl_folder_file_name.c_str());
+      links.push_back(dl_folder_file_name);
       dl_folder_file_name = "";
     } else {
       dl_folder_file_name = "";
