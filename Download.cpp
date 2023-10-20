@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <string>
 
+#define _CRT_SECURE_NO_DEPRECATE
 #include "include/curl/curl.h"
 #include "include/curl/easy.h"
 static size_t save_file(void *ptr, size_t size, size_t nmemb, FILE *stream) {
