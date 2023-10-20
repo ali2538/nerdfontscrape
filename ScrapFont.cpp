@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 
+#define CURL_STATICLIB 
 #include "include/curl/curl.h"
 
 std::string site_get_request(std::string url) {
