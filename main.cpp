@@ -1,9 +1,11 @@
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <ostream>
 #include <regex>
 #include <sstream>
 #include <string>
+#include <thread>
 #include <vector>
 
 #include "Download.h"
@@ -15,6 +17,7 @@ int main(int argc, char *argv[]) {
   std::regex regexp("https.*zip");
   std::istringstream pageLines(res);
   std::string line;
+  std::map<std::string, std::string> file_src_dest_list;
   std::vector<std::string> links;
   std::sregex_iterator iter(res.begin(), res.end(), regexp);
   std::sregex_iterator endreg;
@@ -34,13 +37,26 @@ int main(int argc, char *argv[]) {
       std::regex_search(match_str, sm, file_name_match);
       dl_folder_file_name = dl_folder + sm.str();
       std::cout << match_str << std::endl;
-      success = download(match_str.c_str(), dl_folder_file_name.c_str());
+      // success = download(match_str.c_str(), dl_folder_file_name.c_str());
+      file_src_dest_list[match_str] = dl_folder_file_name;
       links.push_back(dl_folder_file_name);
       dl_folder_file_name = "";
     } else {
       dl_folder_file_name = "";
     }
     skip++;
+  }
+
+  std::vector<std::thread> threads;
+  std::map<std::string, std::string>::iterator itr = file_src_dest_list.begin();
+  while (itr != file_src_dest_list.end()) {
+    threads.push_back(
+        std::thread(download, itr->first.c_str(), itr->second.c_str()));
+    ++itr;
+  }
+
+  for (auto &th : threads) {
+    th.join();
   }
   return 0;
 }
