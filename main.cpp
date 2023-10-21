@@ -16,15 +16,13 @@ int main(int argc, char *argv[]) {
       site_get_request("https://www.nerdfonts.com/font-downloads");
   std::regex regexp("https.*zip");
   std::istringstream pageLines(res);
-  std::string line;
-  std::map<std::string, std::string> file_src_dest_list;
-  std::vector<std::string> links;
   std::sregex_iterator iter(res.begin(), res.end(), regexp);
   std::sregex_iterator endreg;
 
+  std::map<std::string, std::string> file_src_dest_list;
+
   std::string dl_folder = "./downloads/";
   std::string dl_folder_file_name = "";
-  std::string fileName = "";
   std::string match_str = "";
   int success = 0;
   std::regex file_name_match("[a-zA-Z0-9]*\\.zip");
@@ -37,9 +35,7 @@ int main(int argc, char *argv[]) {
       std::regex_search(match_str, sm, file_name_match);
       dl_folder_file_name = dl_folder + sm.str();
       std::cout << match_str << std::endl;
-      // success = download(match_str.c_str(), dl_folder_file_name.c_str());
       file_src_dest_list[match_str] = dl_folder_file_name;
-      links.push_back(dl_folder_file_name);
       dl_folder_file_name = "";
     } else {
       dl_folder_file_name = "";
